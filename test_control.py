@@ -2,7 +2,7 @@
 import pygame
 
 # Import pygame.locals for easier access to key coordinates
-# Updated to conform to flake8 and black standards
+# Updatd to conform to flake8 and black standards
 from pygame.locals import (
     K_z,
     K_q,
@@ -15,6 +15,11 @@ from pygame.locals import (
     K_ESCAPE,
     KEYDOWN,
     KEYUP,
+    JOYBUTTONDOWN,
+    JOYAXISMOTION,
+    JOYHATMOTION,
+    JOYDEVICEADDED,
+    JOYDEVICEREMOVED,
     QUIT,
 )
 
@@ -31,7 +36,11 @@ class Player(pygame.sprite.Sprite):
         self.surf.fill((255, 255, 255))
         self.rect = self.surf.get_rect()
 
-    def update(self, pressed_keys, up, down, left, right):
+    def changeColor(self, color):
+        self.surf.fill((color))
+
+
+    def movementKeyboard(self, pressed_keys, up, down, left, right):
         if pressed_keys[up]:
             self.rect.move_ip(0, -5)
         if pressed_keys[down]:
@@ -41,6 +50,17 @@ class Player(pygame.sprite.Sprite):
         if pressed_keys[right]:
             self.rect.move_ip(5, 0)
 
+    def movementJoystick(self, motion):
+        self.rect.move_ip(motion[0]*10, motion[1]*10)
+
+def slotDisponible(liste):
+    for i in liste:
+        if liste[i] == 0:
+            return i
+        else:
+            return len(liste)
+
+
 
 #Initialize pygame
 pygame.init()
@@ -49,22 +69,65 @@ pygame.init()
 # The size is determined by the constant SCREEN_WIDTH and SCREEN_HEIGHT
 screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
 
+
 # Instantiate player. Right now, this is just a rectangle.
 player1 = Player()
 player2 = Player()
 
 pygame.joystick.init()
+joysticks = [pygame.joystick.Joystick(i) for i in range(pygame.joystick.get_count())]
 
+motion1 = [0, 0]
+motion2 = [0, 0]
+manette = []
 
 # Run until the user asks to quit
 running = True
 
 # Main loop
 while running:
+
+    if abs(motion1[0]) < 0.1:
+        motion1[0] = 0
+
+    if abs(motion1[1]) < 0.1:
+        motion1[1] = 0
+
+    if abs(motion2[0]) < 0.1:
+        motion2[0] = 0
+
+    if abs(motion2[1]) < 0.1:
+        motion2[1] = 0
     
+
     # for loop through the event queue
     for event in pygame.event.get():
         # Check for KEYDOWN event
+
+        if event.type == JOYBUTTONDOWN:
+            print(event)
+
+            if event.button == 0 and event.joy == 0:
+                player1.changeColor((100,100,100))
+            if event.button == 0 and event.joy == 1:
+                player2.changeColor((200,100,100))
+
+
+        if event.type == JOYAXISMOTION:
+            print(event)
+            if event.axis < 2 and event.joy == 0:
+                motion1[event.axis] = event.value
+
+            if event.axis < 2 and event.joy == 1:
+                motion2[event.axis] = event.value 
+
+        if event.type == JOYDEVICEADDED:
+            print(event)
+            joysticks = [pygame.joystick.Joystick(i) for i in range(pygame.joystick.get_count())]
+
+        if event.type == JOYDEVICEREMOVED:
+            joysticks = [pygame.joystick.Joystick(i) for i in range(pygame.joystick.get_count())]
+
         if event.type == KEYDOWN:
             # If the Esc key is pressed, then exit the main loop
             if event.key == K_ESCAPE:
@@ -76,8 +139,12 @@ while running:
 
     pressed_keys = pygame.key.get_pressed()
 
-    player1.update(pressed_keys, K_UP, K_DOWN, K_LEFT, K_RIGHT)
-    player2.update(pressed_keys, K_z, K_s, K_q, K_d)
+
+    player1.movementKeyboard(pressed_keys, K_UP, K_DOWN, K_LEFT, K_RIGHT)
+    player1.movementJoystick(motion1)
+
+    player2.movementKeyboard(pressed_keys, K_z, K_s, K_q, K_d)
+    player2.movementJoystick(motion2)
 
     # Fill the screen with white
     screen.fill((0, 0, 0))
