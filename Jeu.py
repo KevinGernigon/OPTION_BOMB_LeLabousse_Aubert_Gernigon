@@ -1,6 +1,8 @@
 import pygame
-import pytmx
-import csv
+from pygame.locals import *
+from datetime import datetime, timedelta
+
+from classes import *
 
 from pygame.locals import (
     K_UP,
@@ -16,15 +18,7 @@ from pygame.locals import (
 
 SCREEN_WIDTH = 1600
 SCREEN_HEIGHT = 900
-
-class Player(pygame.sprite.Sprite):
-    def __init__(self, skin, position_x, position_y):
-        super(Player, self).__init__()
-        self.surf = pygame.image.load(skin).convert_alpha()
-        #self.surf.fill((255, 255, 255))
-        self.rect = self.surf.get_rect()
-        self.rect.x = position_x
-        self.rect.y = position_y
+image_bombe = "bomb.png"
 
 # Move the sprite based on user keypresses
 
@@ -35,13 +29,20 @@ pygame.init()
 screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
 # Instantiate player. Right now, this is just a rectangle.
 player = Player("perso.png", 200, 200)
-bomb = pygame.image.load("bomb.png").convert_alpha()
+player2 = Player("perso.png", 400, 400)
+
+bombe = Bomb("bomb.png",player,player2)
+bombe2 = Bomb("bomb.png",player2,player)
+
 
 # Run until the user asks to quit
 running = True
 
 # Main loop
 while running:
+    
+    pygame.time.Clock().tick(30)
+    print(pygame.time.get_ticks())
     
 
     # for loop through the event queue
@@ -71,18 +72,22 @@ while running:
         player.rect.move_ip(1, 0)
 
     if pressed_keys[K_SPACE]:
-        screen.blit(bomb, (player.rect.left, player.rect.top))
-        pygame.display.flip()
+        bombe.poser(player.x, player.y, image_bombe)
 
 
     # Fill the screen with white
-    screen.fill((0, 0, 0))
+    screen.fill((255, 255, 255))
 
     # Draw the player on the screen
     screen.blit(player.surf, player.rect)
 
     # Flip the display
     pygame.display.flip()
+
+    game_over = bombe.exploser()
+    if game_over == 1:
+        running = False
+        print("Game over")
 
 # Done! Time to quit.
 pygame.quit()
