@@ -4,6 +4,10 @@ import pygame
 # Import pygame.locals for easier access to key coordinates
 # Updated to conform to flake8 and black standards
 from pygame.locals import (
+    K_z,
+    K_q,
+    K_s,
+    K_d,
     K_UP,
     K_DOWN,
     K_LEFT,
@@ -27,26 +31,16 @@ class Player(pygame.sprite.Sprite):
         self.surf.fill((255, 255, 255))
         self.rect = self.surf.get_rect()
 
-# Move the sprite based on user keypresses
-def update(self, pressed_keys):
-    if pressed_keys[K_UP]:
-        player.surf.fill(100, 100, 100)
-    if pressed_keys[K_DOWN]:
-        player.rect.move_ip(0, 5)
-    if pressed_keys[K_LEFT]:
-        player.rect.move_ip(-5, 0)
-    if pressed_keys[K_RIGHT]:
-        player.rect.move_ip(5, 0)
+    def update(self, pressed_keys, up, down, left, right):
+        if pressed_keys[up]:
+            self.rect.move_ip(0, -5)
+        if pressed_keys[down]:
+            self.rect.move_ip(0, 5)
+        if pressed_keys[left]:
+            self.rect.move_ip(-5, 0)
+        if pressed_keys[right]:
+            self.rect.move_ip(5, 0)
 
-    # Keep player on the screen
-    if player.rect.left < 0:
-        player.rect.left = 0
-    if player.rect.right > SCREEN_WIDTH:
-        player.rect.right = SCREEN_WIDTH
-    if player.rect.top <= 0:
-        player.rect.top = 0
-    if player.rect.bottom >= SCREEN_HEIGHT:
-        player.rect.bottom = SCREEN_HEIGHT
 
 #Initialize pygame
 pygame.init()
@@ -56,7 +50,11 @@ pygame.init()
 screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
 
 # Instantiate player. Right now, this is just a rectangle.
-player = Player()
+player1 = Player()
+player2 = Player()
+
+pygame.joystick.init()
+
 
 # Run until the user asks to quit
 running = True
@@ -64,7 +62,6 @@ running = True
 # Main loop
 while running:
     
-
     # for loop through the event queue
     for event in pygame.event.get():
         # Check for KEYDOWN event
@@ -79,24 +76,16 @@ while running:
 
     pressed_keys = pygame.key.get_pressed()
 
-    if pressed_keys[K_UP]:
-        player.rect.move_ip(0,-5)
-
-    if pressed_keys[K_DOWN]:
-        player.rect.move_ip(0, 5)
-
-    if pressed_keys[K_LEFT]:
-        player.rect.move_ip(-5, 0)
-        
-    if pressed_keys[K_RIGHT]:
-        player.rect.move_ip(5, 0)
+    player1.update(pressed_keys, K_UP, K_DOWN, K_LEFT, K_RIGHT)
+    player2.update(pressed_keys, K_z, K_s, K_q, K_d)
 
     # Fill the screen with white
     screen.fill((0, 0, 0))
 
     # Draw the player on the screen
-    screen.blit(player.surf, player.rect)
-
+    screen.blit(player1.surf, player1.rect)
+    screen.blit(player2.surf, player2.rect)
+    
     # Flip the display
     pygame.display.flip()
 
