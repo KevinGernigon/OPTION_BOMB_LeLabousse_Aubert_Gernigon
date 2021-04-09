@@ -17,31 +17,26 @@ from pygame.locals import (
 SCREEN_WIDTH = 720
 SCREEN_HEIGHT = 720
 
-#map_data = [10, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 11, 4, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 5, 4, 0, 8, 2, 0, 0, 0, 2, 0, 0, 0, 2, 9, 0, 5, 4, 0, 5, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4, 0, 5, 4, 0, 0, 0, 0, 0, 2, 2, 2, 0, 0, 0, 0, 0, 5, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 5, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 5, 4, 0, 2, 2, 2, 0, 0, 0, 0, 0, 2, 2, 2, 0, 5, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 5, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 5, 4, 0, 0, 0, 0, 0, 2, 2, 2, 0, 0, 0, 0, 0, 5, 4, 0, 5, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4, 0, 5, 4, 0, 6, 3, 0, 0, 0, 3, 0, 0, 0, 3, 7, 0, 5, 4, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 5, 12, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 13]
-
+# données des murs pour les créer via les tiles correspondantes dans le dossier assets
 walls_data = [[10, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 11], [4, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, 5], [4, -1, 8, 2, -1, -1, -1, 2, -1, -1, -1, 2, 9, -1, 5], [4, -1, 5, -1, -1, -1, -1, -1, -1, -1, -1, -1, 4, -1, 5], [4, -1, -1, -1, -1, -1, 2, 2, 2, -1, -1, -1, -1, -1, 5], [4, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, 5], [4, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, 5], [4, -1, 2, 2, 2, -1, -1, -1, -1, -1, 2, 2, 2, -1, 5], [4, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, 5], [4, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, 5], [4, -1, -1, -1, -1, -1, 2, 2, 2, -1, -1, -1, -1, -1, 5], [4, -1, 5, -1, -1, -1, -1, -1, -1, -1, -1, -1, 4, -1, 5], [4, -1, 6, 3, -1, -1, -1, 3, -1, -1, -1, 3, 7, -1, 5], [4, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, 5], [12, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 13]]
+# liste vide remplie par une boucle
 walls_img_list = []
 
-#ground_data = [-1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, 1, 0, 0, 0, 0 ,0, 0, 0, 0, 0, 0, 0, 1, -1, -1, 0, -1, -1, 0, 0, 0, -1, 0, 0, 0, -1, -1, 0, -1, -1, 0, -1, 0, 0, 0, 0, 0, 0, 0, 0, 0, -1, 0, -1, -1, 0, 0, 0, 0, 0, -1, -1, -1, 0, 0, 0, 0, 0, -1, -1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, -1, -1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, -1, -1, 0, -1, -1, -1, 0, 0, 0, 0, 0, -1, -1, -1, 0, -1, -1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, -1, -1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, -1, -1, 0, 0, 0, 0, 0, -1, -1, -1, 0, 0, 0, 0, 0, -1, -1, 0, -1, 0, 0, 0, 0, 0, 0, 0, 0, 0, -1, 0, -1, -1, 0, -1, -1, 0 ,0 ,0, -1, 0, 0, 0, -1, -1, 0, -1, -1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1]
-#ground_img_list = []
-
+#nombre de lignes et de colonnes de tiles
 rows = 15
-wall_types = 14
-#ground_types = 2
-tile_size = 48
 cols = 15
-wall_drawn = False
+#nombre de tiles différentes utilisées
+wall_types = 14
+#taille d'une tile pour resize
+tile_size = 48
 
-#for x in range (ground_types):
-#    img = pygame.image.load(f'assets/{x}.png')
-#    img = pygame.transform.scale(img, (tile_size, tile_size))
-#    ground_img_list.append(img)
-
+#boucle qui rempli la liste walls_img_list des 14 tiles nécessaires
 for x in range (2, wall_types):
     img = pygame.image.load(f'assets/{x}.png')
     img = pygame.transform.scale(img, (tile_size, tile_size))
     walls_img_list.append(img)
 
+#coordonnées des différents blocks d'obstacles
 top_wall = pygame.Rect(0,0, 720, 33)
 bottom_wall = pygame.Rect(0, 672, 720, 48)
 left_wall = pygame.Rect(0, 0, 48, 720)
@@ -57,6 +52,7 @@ left_bottom_corner_wall = [pygame.Rect(96, 528, 48, 48), pygame.Rect(96, 576, 96
 bottom_center_tile = pygame.Rect(336, 576, 48, 48)
 right_bottom_corner_wall = [pygame.Rect(576, 528, 48, 48), pygame.Rect(528, 576, 96, 48)]
 
+#liste regroupant toutes les coordonnées des obstacles
 obstacles = [top_wall, bottom_wall, left_wall, right_wall, left_top_corner_wall[0], left_top_corner_wall[1], top_center_tile, right_top_corner_wall[0], right_top_corner_wall[1], top_center_wall, center_left_wall, center_right_wall, bottom_center_wall, left_bottom_corner_wall[0], left_bottom_corner_wall[1], bottom_center_tile, right_bottom_corner_wall[0], right_bottom_corner_wall[1]]
 
 class Player(pygame.sprite.Sprite):
@@ -68,7 +64,6 @@ class Player(pygame.sprite.Sprite):
         self.rect.x = position_x
         self.rect.y = position_y
 
-# Move the sprite based on user keypresses
 
 #Initialize pygame
 pygame.init()
@@ -78,6 +73,7 @@ screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
 # Instantiate player. Right now, this is just a rectangle.
 background = pygame.image.load("assets/background.png").convert_alpha()
 
+#function permettant d'appliquer les tiles à l'écran en fonction du tableau de données
 def draw_walls():
     for y, row in enumerate(walls_data):
         for x, tile in enumerate(row):
@@ -85,10 +81,6 @@ def draw_walls():
                 #print(tile)
                 screen.blit(walls_img_list[tile-2], (x * tile_size, y * tile_size))
         
-
-#walls = pygame.image.load("assets/walls.png").convert_alpha()
-#obstacles = walls.get_rect()
-#pygame.mask.from_surface(walls)
 player = Player("assets/joueur_bleu.png", 200, 200)
 bomb = pygame.image.load("assets/bomb.png").convert_alpha()
 
@@ -113,6 +105,8 @@ while running:
 
     pressed_keys = pygame.key.get_pressed()
 
+
+    #test quand le joueur collide avec un des obstacles présent dans la liste du même nom
     if player.rect.collidelistall(obstacles):
         print("touching")
 
@@ -135,22 +129,7 @@ while running:
             screen.blit(bomb, (player.rect.left, player.rect.top))
             pygame.display.flip()
 
-    #if pygame.Rect.colliderect(player.rect, left_corner_wall[0]) or pygame.Rect.colliderect(player.rect, left_corner_wall[1]):
-    #    print("touching")
-    #if pygame.sprite.collide_mask(player, walls.rect.right):
-    #    print("touching right")
-
-    # Fill the screen with white
-    
-
-    # Draw the player on the screen
-
-    #if wall_drawn == False:
-    #    screen.fill((0, 0, 0))
-    #    screen.blit(background, (0,0))
-    #    draw_walls()
-    #    wall_drawn = True
-    #screen.blit(walls, (0,0))
+   
     screen.fill((0, 0, 0))
     screen.blit(background, (0,0))
     draw_walls()
