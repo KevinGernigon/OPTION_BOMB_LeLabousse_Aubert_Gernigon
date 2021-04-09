@@ -46,6 +46,18 @@ top_wall = pygame.Rect(0,0, 720, 33)
 bottom_wall = pygame.Rect(0, 672, 720, 48)
 left_wall = pygame.Rect(0, 0, 48, 720)
 right_wall = pygame.Rect(672, 0, 48, 720)
+left_top_corner_wall = [pygame.Rect(96, 96, 96, 48), pygame.Rect(96, 144, 48, 48)]
+top_center_tile = pygame.Rect(336, 96, 48, 48)
+right_top_corner_wall = [pygame.Rect(528, 96, 96, 48), pygame.Rect(576, 144, 48, 48)]
+top_center_wall = pygame.Rect(288, 192, 144, 48)
+center_left_wall = pygame.Rect(96, 336, 144, 48)
+center_right_wall = pygame.Rect(480, 336, 144, 48)
+bottom_center_wall = pygame.Rect(288, 480, 144, 48)
+left_bottom_corner_wall = [pygame.Rect(96, 528, 48, 48), pygame.Rect(96, 576, 96, 48)]
+bottom_center_tile = pygame.Rect(336, 576, 48, 48)
+right_bottom_corner_wall = [pygame.Rect(576, 528, 48, 48), pygame.Rect(528, 576, 96, 48)]
+
+obstacles = [top_wall, bottom_wall, left_wall, right_wall, left_top_corner_wall[0], left_top_corner_wall[1], top_center_tile, right_top_corner_wall[0], right_top_corner_wall[1], top_center_wall, center_left_wall, center_right_wall, bottom_center_wall, left_bottom_corner_wall[0], left_bottom_corner_wall[1], bottom_center_tile, right_bottom_corner_wall[0], right_bottom_corner_wall[1]]
 
 class Player(pygame.sprite.Sprite):
     def __init__(self, skin, position_x, position_y):
@@ -77,7 +89,7 @@ def draw_walls():
 #walls = pygame.image.load("assets/walls.png").convert_alpha()
 #obstacles = walls.get_rect()
 #pygame.mask.from_surface(walls)
-player = Player("assets/joueur_bleu.png", 48, 33)
+player = Player("assets/joueur_bleu.png", 200, 200)
 bomb = pygame.image.load("assets/bomb.png").convert_alpha()
 
 # Run until the user asks to quit
@@ -101,23 +113,29 @@ while running:
 
     pressed_keys = pygame.key.get_pressed()
 
-    if pressed_keys[K_UP] and pygame.Rect.colliderect(player.rect, top_wall) == False:
-        player.rect.move_ip(0,-1)
+    if player.rect.collidelistall(obstacles):
+        print("touching")
 
-    if pressed_keys[K_DOWN] and pygame.Rect.colliderect(player.rect, bottom_wall) == False:
-        player.rect.move_ip(0, 1)
+    #if player.rect.collidelistall(obstacles) == [] :
+    if True: 
 
-    if pressed_keys[K_LEFT] and pygame.Rect.colliderect(player.rect, left_wall) == False:
-        player.rect.move_ip(-1, 0)
-        
-    if pressed_keys[K_RIGHT] and pygame.Rect.colliderect(player.rect, right_wall) == False:
-        player.rect.move_ip(1, 0)
+        if pressed_keys[K_UP] and pygame.Rect.colliderect(player.rect, top_wall) == False:
+            player.rect.move_ip(0,-1)
 
-    if pressed_keys[K_SPACE]:
-        screen.blit(bomb, (player.rect.left, player.rect.top))
-        pygame.display.flip()
+        if pressed_keys[K_DOWN] and pygame.Rect.colliderect(player.rect, bottom_wall) == False:
+            player.rect.move_ip(0, 1)
 
-    #if pygame.Rect.colliderect(player.rect, obstacles):
+        if pressed_keys[K_LEFT] and pygame.Rect.colliderect(player.rect, left_wall) == False:
+            player.rect.move_ip(-1, 0)
+            
+        if pressed_keys[K_RIGHT] and pygame.Rect.colliderect(player.rect, right_wall) == False:
+            player.rect.move_ip(1, 0)
+
+        if pressed_keys[K_SPACE]:
+            screen.blit(bomb, (player.rect.left, player.rect.top))
+            pygame.display.flip()
+
+    #if pygame.Rect.colliderect(player.rect, left_corner_wall[0]) or pygame.Rect.colliderect(player.rect, left_corner_wall[1]):
     #    print("touching")
     #if pygame.sprite.collide_mask(player, walls.rect.right):
     #    print("touching right")
