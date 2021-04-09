@@ -63,6 +63,10 @@ class Player(pygame.sprite.Sprite):
         self.rect = pygame.Rect(0, 64, 45, 64)
         self.rect.x = position_x
         self.rect.y = position_y
+        self.velocity_left = 0
+        self.velocity_right = 0
+        self.velocity_up = 0
+        self.velocity_down = 0
 
 
 #Initialize pygame
@@ -84,13 +88,24 @@ def draw_walls():
 player = Player("assets/joueur_bleu.png", 200, 200)
 bomb = pygame.image.load("assets/bomb.png").convert_alpha()
 
+stuck_left = False
+stuck_right = False
+stuck_up = False
+stuck_down = False
+
+facing_up = False
+facing_down = False
+facing_left = False
+facing_right = False
+
 # Run until the user asks to quit
 running = True
 
 # Main loop
 while running:
     
-    
+    pygame.time.Clock().tick(60)
+
     # for loop through the event queue
     for event in pygame.event.get():
         # Check for KEYDOWN event
@@ -107,29 +122,115 @@ while running:
 
 
     #test quand le joueur collide avec un des obstacles présent dans la liste du même nom
-    if player.rect.collidelistall(obstacles):
-        print("touching")
+    #if player.rect.collidelistall(obstacles):
+        #print("touching")
 
-    #if player.rect.collidelistall(obstacles) == [] :
-    if True: 
+    #if player.rect.collidelistall(obstacles) == [] : 
+# controles
+    if pressed_keys[K_UP] and stuck_up != True:
+        player.velocity_up = 1
+        facing_up = True
+        facing_left = False
+        facing_down = False
+        facing_right = False
+    else:
+        player.velocity_up = 0
 
-        if pressed_keys[K_UP] and pygame.Rect.colliderect(player.rect, top_wall) == False:
-            player.rect.move_ip(0,-1)
+    if pressed_keys[K_DOWN] and stuck_down != True:
+        player.velocity_down = 1
+        facing_down = True
+        facing_left = False
+        facing_up = False
+        facing_right = False  
+    else :
+        player.velocity_down = 0
 
-        if pressed_keys[K_DOWN] and pygame.Rect.colliderect(player.rect, bottom_wall) == False:
-            player.rect.move_ip(0, 1)
-
-        if pressed_keys[K_LEFT] and pygame.Rect.colliderect(player.rect, left_wall) == False:
-            player.rect.move_ip(-1, 0)
+    if pressed_keys[K_LEFT] and stuck_left != True:
+        player.velocity_left = 1
+        facing_left = True
+        facing_up = False
+        facing_down = False
+        facing_right = False
+    else :
+        player.velocity_left = 0
             
-        if pressed_keys[K_RIGHT] and pygame.Rect.colliderect(player.rect, right_wall) == False:
-            player.rect.move_ip(1, 0)
+    if pressed_keys[K_RIGHT] and stuck_right != True:
+        player.velocity_right = 1
+        facing_right = True
+        facing_left = False
+        facing_down = False
+        facing_up = False
+    else :
+        player.velocity_right = 0
 
-        if pressed_keys[K_SPACE]:
-            screen.blit(bomb, (player.rect.left, player.rect.top))
-            pygame.display.flip()
+# bomb
+    if pressed_keys[K_SPACE]:
+        screen.blit(bomb, (player.rect.left, player.rect.top))
+        pygame.display.flip()
 
-   
+    if facing_up and player.rect.collidelistall(obstacles) != [] :
+        player.velocity_up = 0
+
+    if facing_down and player.rect.collidelistall(obstacles) != [] :
+        player.velocity_down = 0
+
+    if facing_left and player.rect.collidelistall(obstacles) != [] :
+        player.velocity_left = 0
+
+    if facing_right == 1 and player.rect.collidelistall(obstacles) != [] :
+        player.velocity_right = 0
+
+
+#mouvement
+    if player.velocity_up == 1:
+        player.rect.move_ip(0,-2)
+
+    if player.velocity_down == 1:
+        player.rect.move_ip(0, 2)
+
+    if player.velocity_left == 1:
+        player.rect.move_ip(-2, 0)
+
+    if player.velocity_right == 1:
+        player.rect.move_ip(2, 0)
+
+    
+
+    #if player.rect.y <= 35 and player.rect.x >= 96 and player.rect.x <= 192 or  player.rect.y <= 35 and player.rect.x >= 336 and player.rect.x <= 384 or  player.rect.y <= 35 and player.rect.x >= 528 and player.rect.x <= 624:
+    #    stuck_up = True
+    #    stuck_down = True
+    #    stuck_left = False
+    #    stuck_right = False
+
+    #if player.rect.y <= 35 and player.rect.x >= 48 and player.rect.x < 96 or player.rect.y <= 35 and player.rect.x > 192 and player.rect.x < 336 or player.rect.y <= 35 and player.rect.x > 384 and player.rect.x < 528 or player.rect.y <= 35 and player.rect.x > 624 and player.rect.x <= 672:
+    #    stuck_up = True
+    #    stuck_down = False
+    #    stuck_left = False
+    #    stuck_right = False
+
+    #if player.rect.y <= 96 and player.rect.y >= 48 and player.rect.x >= 48 and player.rect.x <= 96 or player.rect.y <= 96 and player.rect.y >= 48 and player.rect.x >= 624 and player.rect.x <= 672:
+    #    stuck_left = True
+    #    stuck_right = True
+    #    stuck_up = False
+    #    stuck_down = False
+
+    #if player.rect.x <= 144 and player.rect.x >= 96 and player.rect.y <= 144 and player.rect.y >= 96:
+    #    stuck_left = True
+    #    stuck_up = True
+    #    stuck_right = False
+    #    stuck_down = False
+
+    #if player.rect.y >= 624:
+    #    stuck_down = True
+
+    #if player.rect.x <= 48:
+    #    stuck_left = True
+
+    #if player.rect.x >= 624:
+    #    stuck_right = True
+
+    #print(player.rect.x)
+    #print(player.rect.y)
     screen.fill((0, 0, 0))
     screen.blit(background, (0,0))
     draw_walls()
