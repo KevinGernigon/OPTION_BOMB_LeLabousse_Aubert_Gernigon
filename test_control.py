@@ -35,31 +35,33 @@ class Player(pygame.sprite.Sprite):
         self.surf = pygame.Surface((75, 25))
         self.surf.fill((255, 255, 255))
         self.rect = self.surf.get_rect()
+        self._motion = [0,0]
 
     def changeColor(self, color):
         self.surf.fill((color))
 
-
     def movementKeyboard(self, pressed_keys, up, down, left, right):
         if pressed_keys[up]:
-            self.rect.move_ip(0, -5)
+            self.rect.move_ip(0, -3)
         if pressed_keys[down]:
-            self.rect.move_ip(0, 5)
+            self.rect.move_ip(0, 3)
         if pressed_keys[left]:
-            self.rect.move_ip(-5, 0)
+            self.rect.move_ip(-3, 0)
         if pressed_keys[right]:
-            self.rect.move_ip(5, 0)
+            self.rect.move_ip(3, 0)
 
-    def movementJoystick(self, motion):
-        self.rect.move_ip(motion[0]*10, motion[1]*10)
+    def movementJoystick(self):
+        if self._motion[0] > 0.15:
+            self.rect.move_ip(3, 0)
+        if self._motion[0] < -0.15:
+            self.rect.move_ip(-3, 0)
+        if self._motion[1] > 0.15:
+            self.rect.move_ip(0, 3)
+        if self._motion[1] < -0.15:
+            self.rect.move_ip(0, -3) 
 
-def slotDisponible(liste):
-    for i in liste:
-        if liste[i] == 0:
-            return i
-        else:
-            return len(liste)
-
+    def setMotion(self, axis, value):
+        self._motion[axis] = value
 
 
 #Initialize pygame
@@ -74,31 +76,18 @@ screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
 player1 = Player()
 player2 = Player()
 
+players = [player1, player2]
+
 pygame.joystick.init()
 joysticks = [pygame.joystick.Joystick(i) for i in range(pygame.joystick.get_count())]
 
-motion1 = [0, 0]
-motion2 = [0, 0]
-manette = []
+
 
 # Run until the user asks to quit
 running = True
 
 # Main loop
 while running:
-
-    if abs(motion1[0]) < 0.1:
-        motion1[0] = 0
-
-    if abs(motion1[1]) < 0.1:
-        motion1[1] = 0
-
-    if abs(motion2[0]) < 0.1:
-        motion2[0] = 0
-
-    if abs(motion2[1]) < 0.1:
-        motion2[1] = 0
-    
 
     # for loop through the event queue
     for event in pygame.event.get():
@@ -107,22 +96,19 @@ while running:
         if event.type == JOYBUTTONDOWN:
             print(event)
 
-            if event.button == 0 and event.joy == 0:
+            if event.button == 0 and event.instance_id == 0:
                 player1.changeColor((100,100,100))
-            if event.button == 0 and event.joy == 1:
+            if event.button == 0 and event.instance_id == 1:
                 player2.changeColor((200,100,100))
 
 
         if event.type == JOYAXISMOTION:
             print(event)
-            if event.axis < 2 and event.joy == 0:
-                motion1[event.axis] = event.value
+            if event.axis < 2 and event.instance_id < len(players):
+                players[event.instance_id].setMotion(event.axis, event.value)
 
-            if event.axis < 2 and event.joy == 1:
-                motion2[event.axis] = event.value 
 
         if event.type == JOYDEVICEADDED:
-            print(event)
             joysticks = [pygame.joystick.Joystick(i) for i in range(pygame.joystick.get_count())]
 
         if event.type == JOYDEVICEREMOVED:
@@ -141,13 +127,14 @@ while running:
 
 
     player1.movementKeyboard(pressed_keys, K_UP, K_DOWN, K_LEFT, K_RIGHT)
-    player1.movementJoystick(motion1)
+    player1.movementJoystick()
 
     player2.movementKeyboard(pressed_keys, K_z, K_s, K_q, K_d)
-    player2.movementJoystick(motion2)
+    player2.movementJoystick()
+
 
     # Fill the screen with white
-    screen.fill((0, 0, 0))
+    screen.fill((100, 100, 100))
 
     # Draw the player on the screen
     screen.blit(player1.surf, player1.rect)
