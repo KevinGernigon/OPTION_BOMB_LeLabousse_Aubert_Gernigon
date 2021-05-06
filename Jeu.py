@@ -69,7 +69,7 @@ while running:
         player.rect.move_ip(-1, 0)
         
     if pressed_keys[K_RIGHT]:
-        player.rect.move_ip(1, 0)
+        player.rect.move_ip(8, 0)
 
     if pressed_keys[K_SPACE]:
         bombe.poser(player.x, player.y, image_bombe)
@@ -80,6 +80,9 @@ while running:
 
     # Draw the player on the screen
     screen.blit(player.surf, player.rect)
+    screen.blit(player2.surf, player2.rect)
+    screen.blit(bombe.bomb, (bombe.x, bombe.y))
+    screen.blit(bombe2.bomb, (bombe2.x, bombe2.y))
 
     # Flip the display
     pygame.display.flip()

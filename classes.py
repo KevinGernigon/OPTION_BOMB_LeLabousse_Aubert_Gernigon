@@ -18,7 +18,7 @@ class Player(pygame.sprite.Sprite):
 class Bomb:
     def __init__(self, bomb, perso1, perso2):
         # chargement des sprites
-        self.bomb = pygame.image.load(bomb).convert()
+        self.bomb = pygame.image.load(bomb).convert_alpha()
         # place la bombe a une position non visible par default
         self.x = 1650
         self.y = 950
@@ -32,8 +32,8 @@ class Bomb:
 
     def poser(self, x, y, bomb):
         #pose et arme la bombe
-        self.bomb = pygame.image.load(bomb).convert()
-        self.bomb.set_colorkey((255, 255, 255))
+        self.bomb = pygame.image.load(bomb).convert_alpha()
+        #self.bomb.set_colorkey((255, 255, 255))
         self.x = x
         self.y = y
         self.case_x = int(x / 128)
@@ -47,7 +47,8 @@ class Bomb:
         # condition explosion de la bombe 3 seconde apres
         if timedelta(seconds=3) <= datetime.now() - self._time_created:
             # change le sprite de la bombe en sprite d'explosion
-            #self.bomb = pygame.image.load(image_explosion).convert()
+            image_explosion = "explodstart.png"
+            self.bomb = pygame.image.load(image_explosion).convert_alpha()
             self.bomb.set_colorkey((0, 0, 0))
             self.explosion = 1
 
