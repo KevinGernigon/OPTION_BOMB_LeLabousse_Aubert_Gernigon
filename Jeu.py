@@ -145,5 +145,10 @@ while running:
         running = False
         print("Game over")
 
+    game_over = bombe2.exploser()
+    if game_over == 1:
+        running = False
+        print("Game over")
+
 # Done! Time to quit.
 pygame.quit()

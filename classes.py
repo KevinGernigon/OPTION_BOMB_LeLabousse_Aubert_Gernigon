@@ -101,10 +101,10 @@ class Bomb:
             try:
 
                 # conditions de victoire (a simplifier)
-                if self.case_x - 48 <= self.perso1.rect.x <= self.case_x + 48 and self.case_y - 48 <= self.perso1.rect.y <= self.case_y + 48:
+                if self.case_x - 150 <= self.perso1.rect.x <= self.case_x + 150 and self.case_y - 150 <= self.perso1.rect.y <= self.case_y + 150:
                     return 1
 
-                if self.case_x - 48 <= self.perso2.rect.x <= self.case_x + 48 and self.case_y - 48 <= self.perso2.rect.y <= self.case_y + 48:
+                if self.case_x - 150 <= self.perso2.rect.x <= self.case_x + 150 and self.case_y - 150 <= self.perso2.rect.y <= self.case_y + 150:
                     return 1
 
             except IndexError:
