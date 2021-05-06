@@ -14,6 +14,51 @@ class Player(pygame.sprite.Sprite):
         self.case_y = 1
         self.x = 128 * self.case_x
         self.y = 128 * self.case_y
+        self._motion = [0,0]
+
+    def movementKeyboard(self, pressed_keys, up, down, left, right):    #Déplace le joueur en fonction des touches clavier
+        if (self.rect.x >= 48 and self.rect.x <= 624 and self.rect.y > 48) and not (self.rect.x >= 144 and self.rect.x < 192 and self.rect.y == 144) and not (self.rect.x > 48 and self.rect.x < 144 and self.rect.y == 192) and not (self.rect.x > 288 and self.rect.x < 384 and self.rect.y == 144) and not (self.rect.x > 480 and self.rect.x < 624 and self.rect.y == 144) and not (self.rect.x > 528 and self.rect.x < 624 and self.rect.y == 192) and not (self.rect.x > 240 and self.rect.x < 432 and self.rect.y == 240) and not (self.rect.x > 48 and self.rect.x < 240 and self.rect.y == 384) and not (self.rect.x > 432 and self.rect.x < 624 and self.rect.y == 384) and not (self.rect.x > 240 and self.rect.x < 432 and self.rect.y == 528) and not (self.rect.x > 48 and self.rect.x < 192 and self.rect.y == 624) and not (self.rect.x > 288 and self.rect.x < 384 and self.rect.y == 624) and not (self.rect.x > 480 and self.rect.x < 624 and self.rect.y == 624):  
+            if pressed_keys[up]:
+                self.rect.move_ip(0,-1)
+
+        if (self.rect.x >= 48 and self.rect.x <= 624 and self.rect.y < 624) and not (self.rect.x > 48 and self.rect.x < 192 and self.rect.y == 48) and not (self.rect.x > 288 and self.rect.x < 384 and self.rect.y == 48) and not (self.rect.x > 480 and self.rect.x < 624 and self.rect.y == 48) and not (self.rect.x > 240 and self.rect.x < 432 and self.rect.y == 144) and not (self.rect.x > 48 and self.rect.x < 240 and self.rect.y == 288) and not (self.rect.x > 432 and self.rect.x < 624 and self.rect.y == 288) and not (self.rect.x > 240 and self.rect.x < 432 and self.rect.y == 432) and not (self.rect.x > 48 and self.rect.x < 144 and self.rect.y == 480) and not (self.rect.x > 96 and self.rect.x < 192 and self.rect.y == 528) and not (self.rect.x > 288 and self.rect.x < 384 and self.rect.y == 528) and not (self.rect.x > 480 and self.rect.x < 624 and self.rect.y == 528) and not (self.rect.x > 528 and self.rect.x < 624 and self.rect.y == 480):
+            if pressed_keys[down]:
+                self.rect.move_ip(0, 1)
+
+        if (self.rect.x > 48 and self.rect.y >= 48 and self.rect.y <= 624) and not (self.rect.x == 192 and self.rect.y > 48 and self.rect.y < 144) and not (self.rect.x == 144 and self.rect.y > 96 and self.rect.y < 192) and not (self.rect.x == 384 and self.rect.y > 48 and self.rect.y < 144) and not (self.rect.x == 624 and self.rect.y > 48 and self.rect.y < 192) and not (self.rect.x == 432 and self.rect.y > 144 and self.rect.y < 240) and not (self.rect.x == 240 and self.rect.y > 288 and self.rect.y < 384) and not (self.rect.x == 624 and self.rect.y > 288 and self.rect.y < 384) and not (self.rect.x == 432 and self.rect.y > 432 and self.rect.y < 528) and not (self.rect.x == 144 and self.rect.y > 480 and self.rect.y < 624) and not (self.rect.x == 192 and self.rect.y > 528 and self.rect.y < 624) and not (self.rect.x == 384 and self.rect.y > 528 and self.rect.y < 624) and not (self.rect.x == 624 and self.rect.y > 480 and self.rect.y < 624):
+            if pressed_keys[left]:
+                self.rect.move_ip(-1, 0)
+
+        if (self.rect.x < 624 and self.rect.y >= 48 and self.rect.y <= 624) and not (self.rect.y > 48 and self.rect.y < 192 and self.rect.x == 48) and not (self.rect.x > 288 and self.rect.x < 384 and self.rect.y > 48 and self.rect.y < 144) and not (self.rect.x > 480 and self.rect.x < 624 and self.rect.y > 48 and self.rect.y < 144) and not (self.rect.x > 528 and self.rect.x < 624 and self.rect.y > 96 and self.rect.y < 192) and not (self.rect.x > 240 and self.rect.x < 288 and self.rect.y > 144 and self.rect.y < 240) and not (self.rect.x == 48 and self.rect.y > 288 and self.rect.y < 384) and not (self.rect.x == 432 and self.rect.y > 288 and self.rect.y < 384) and not (self.rect.x == 240 and self.rect.y > 432 and self.rect.y < 528) and not (self.rect.x == 48 and self.rect.y > 480 and self.rect.y < 624) and not (self.rect.x == 288 and self.rect.y > 528 and self.rect.y < 624) and not (self.rect.x == 480 and self.rect.y > 528 and self.rect.y < 624) and not (self.rect.x == 528 and self.rect.y > 480 and self.rect.y < 624):
+            if pressed_keys[right]:
+                self.rect.move_ip(1, 0)
+
+    def movementJoystick(self): #Bouge le perso en fonction du stick
+            
+        if abs(self._motion[0]) > abs(self._motion[1]): #Empêche le joueur de se déplacer en diagonale
+            self._motion[1] = 0
+
+        else:
+            self._motion[0] = 0
+    
+        if (self.rect.x >= 48 and self.rect.x <= 624 and self.rect.y > 48) and not (self.rect.x >= 144 and self.rect.x < 192 and self.rect.y == 144) and not (self.rect.x > 48 and self.rect.x < 144 and self.rect.y == 192) and not (self.rect.x > 288 and self.rect.x < 384 and self.rect.y == 144) and not (self.rect.x > 480 and self.rect.x < 624 and self.rect.y == 144) and not (self.rect.x > 528 and self.rect.x < 624 and self.rect.y == 192) and not (self.rect.x > 240 and self.rect.x < 432 and self.rect.y == 240) and not (self.rect.x > 48 and self.rect.x < 240 and self.rect.y == 384) and not (self.rect.x > 432 and self.rect.x < 624 and self.rect.y == 384) and not (self.rect.x > 240 and self.rect.x < 432 and self.rect.y == 528) and not (self.rect.x > 48 and self.rect.x < 192 and self.rect.y == 624) and not (self.rect.x > 288 and self.rect.x < 384 and self.rect.y == 624) and not (self.rect.x > 480 and self.rect.x < 624 and self.rect.y == 624):  
+            if self._motion[0] > 0.25:
+                self.rect.move_ip(0,-1)
+
+        if (self.rect.x >= 48 and self.rect.x <= 624 and self.rect.y < 624) and not (self.rect.x > 48 and self.rect.x < 192 and self.rect.y == 48) and not (self.rect.x > 288 and self.rect.x < 384 and self.rect.y == 48) and not (self.rect.x > 480 and self.rect.x < 624 and self.rect.y == 48) and not (self.rect.x > 240 and self.rect.x < 432 and self.rect.y == 144) and not (self.rect.x > 48 and self.rect.x < 240 and self.rect.y == 288) and not (self.rect.x > 432 and self.rect.x < 624 and self.rect.y == 288) and not (self.rect.x > 240 and self.rect.x < 432 and self.rect.y == 432) and not (self.rect.x > 48 and self.rect.x < 144 and self.rect.y == 480) and not (self.rect.x > 96 and self.rect.x < 192 and self.rect.y == 528) and not (self.rect.x > 288 and self.rect.x < 384 and self.rect.y == 528) and not (self.rect.x > 480 and self.rect.x < 624 and self.rect.y == 528) and not (self.rect.x > 528 and self.rect.x < 624 and self.rect.y == 480):
+                if self._motion[0] < -0.25:
+                    self.rect.move_ip(0, 1)
+
+        if (self.rect.x > 48 and self.rect.y >= 48 and self.rect.y <= 624) and not (self.rect.x == 192 and self.rect.y > 48 and self.rect.y < 144) and not (self.rect.x == 144 and self.rect.y > 96 and self.rect.y < 192) and not (self.rect.x == 384 and self.rect.y > 48 and self.rect.y < 144) and not (self.rect.x == 624 and self.rect.y > 48 and self.rect.y < 192) and not (self.rect.x == 432 and self.rect.y > 144 and self.rect.y < 240) and not (self.rect.x == 240 and self.rect.y > 288 and self.rect.y < 384) and not (self.rect.x == 624 and self.rect.y > 288 and self.rect.y < 384) and not (self.rect.x == 432 and self.rect.y > 432 and self.rect.y < 528) and not (self.rect.x == 144 and self.rect.y > 480 and self.rect.y < 624) and not (self.rect.x == 192 and self.rect.y > 528 and self.rect.y < 624) and not (self.rect.x == 384 and self.rect.y > 528 and self.rect.y < 624) and not (self.rect.x == 624 and self.rect.y > 480 and self.rect.y < 624):
+            if self._motion[1] > 0.25:
+                self.rect.move_ip(-1, 0)
+
+        if (self.rect.x < 624 and self.rect.y >= 48 and self.rect.y <= 624) and not (self.rect.y > 48 and self.rect.y < 192 and self.rect.x == 48) and not (self.rect.x > 288 and self.rect.x < 384 and self.rect.y > 48 and self.rect.y < 144) and not (self.rect.x > 480 and self.rect.x < 624 and self.rect.y > 48 and self.rect.y < 144) and not (self.rect.x > 528 and self.rect.x < 624 and self.rect.y > 96 and self.rect.y < 192) and not (self.rect.x > 240 and self.rect.x < 288 and self.rect.y > 144 and self.rect.y < 240) and not (self.rect.x == 48 and self.rect.y > 288 and self.rect.y < 384) and not (self.rect.x == 432 and self.rect.y > 288 and self.rect.y < 384) and not (self.rect.x == 240 and self.rect.y > 432 and self.rect.y < 528) and not (self.rect.x == 48 and self.rect.y > 480 and self.rect.y < 624) and not (self.rect.x == 288 and self.rect.y > 528 and self.rect.y < 624) and not (self.rect.x == 480 and self.rect.y > 528 and self.rect.y < 624) and not (self.rect.x == 528 and self.rect.y > 480 and self.rect.y < 624):
+            if self._motion[1] < -0.25:
+                self.rect.move_ip(1, 0)
+
+    def setMotion(self, axis, value):   #_motion récupère l'axe et la valeur du stick
+        self._motion[axis] = value
 
 class Bomb:
     def __init__(self, bomb, perso1, perso2):
