@@ -1,6 +1,4 @@
 import pygame
-import pytmx
-import csv
 
 from pygame.locals import (
     K_UP,
