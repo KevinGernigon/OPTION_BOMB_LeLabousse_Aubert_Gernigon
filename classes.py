@@ -12,8 +12,8 @@ class Player(pygame.sprite.Sprite):
         self.rect.y = position_y
         self.case_x = 1
         self.case_y = 1
-        self.x = 128 * self.case_x
-        self.y = 128 * self.case_y
+        self.x = 128*self.case_x
+        self.y = 128*self.case_y
         self._motion = [0,0]
 
     def movementKeyboard(self, pressed_keys, up, down, left, right):    #Déplace le joueur en fonction des touches clavier
@@ -81,8 +81,8 @@ class Bomb:
         #self.bomb.set_colorkey((255, 255, 255))
         self.x = x
         self.y = y
-        self.case_x = int(x / 128)
-        self.case_y = int(y / 128)
+        self.case_x = x
+        self.case_y = y
         self._time_created = datetime.now()
         self.explosion = 0
 
@@ -100,15 +100,11 @@ class Bomb:
             try:
 
                 # conditions de victoire (a simplifier)
-                if self.case_x == self.perso1.case_x and self.case_y - 1 <= self.perso1.case_y <= self.case_y + 1:
-                    return 1
-                elif self.case_x - 1 <= self.perso1.case_x <= self.case_x + 1 and self.case_y == self.perso1.case_y:
+                if self.case_x - 48 <= self.perso1.rect.x <= self.case_x + 48 and self.case_y - 48 <= self.perso1.rect.y <= self.case_y + 48:
                     return 1
 
-                if self.case_x == self.perso2.case_x and self.case_y - 1 <= self.perso2.case_y <= self.case_y + 1:
+                if self.case_x - 48 <= self.perso2.rect.x <= self.case_x + 48 and self.case_y - 48 <= self.perso2.rect.y <= self.case_y + 48:
                     return 1
-                elif self.case_x - 1 <= self.perso2.case_x <= self.case_x + 1 and self.case_y == self.perso2.case_y:
-                    return 1 
 
             except IndexError:
                 # au cas ou la bombe est / detruit un bloc en dehors du terrain
