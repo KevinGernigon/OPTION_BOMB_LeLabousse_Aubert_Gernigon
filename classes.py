@@ -35,30 +35,31 @@ class Player(pygame.sprite.Sprite):
 
     def movementJoystick(self): #Bouge le perso en fonction du stick
             
-        if abs(self._motion[0]) > abs(self._motion[1]): #Empêche le joueur de se déplacer en diagonale
-            self._motion[1] = 0
+        #if abs(self._motion[0]) > abs(self._motion[1]): #Empêche le joueur de se déplacer en diagonale
+        #    self._motion[1] = 0
 
-        else:
-            self._motion[0] = 0
+        #else:
+        #    self._motion[0] = 0
     
         if (self.rect.x >= 48 and self.rect.x <= 624 and self.rect.y > 48) and not (self.rect.x >= 144 and self.rect.x < 192 and self.rect.y == 144) and not (self.rect.x > 48 and self.rect.x < 144 and self.rect.y == 192) and not (self.rect.x > 288 and self.rect.x < 384 and self.rect.y == 144) and not (self.rect.x > 480 and self.rect.x < 624 and self.rect.y == 144) and not (self.rect.x > 528 and self.rect.x < 624 and self.rect.y == 192) and not (self.rect.x > 240 and self.rect.x < 432 and self.rect.y == 240) and not (self.rect.x > 48 and self.rect.x < 240 and self.rect.y == 384) and not (self.rect.x > 432 and self.rect.x < 624 and self.rect.y == 384) and not (self.rect.x > 240 and self.rect.x < 432 and self.rect.y == 528) and not (self.rect.x > 48 and self.rect.x < 192 and self.rect.y == 624) and not (self.rect.x > 288 and self.rect.x < 384 and self.rect.y == 624) and not (self.rect.x > 480 and self.rect.x < 624 and self.rect.y == 624):  
-            if self._motion[0] > 0.25:
+            if self._motion[1] < -0.25:
                 self.rect.move_ip(0,-1)
 
         if (self.rect.x >= 48 and self.rect.x <= 624 and self.rect.y < 624) and not (self.rect.x > 48 and self.rect.x < 192 and self.rect.y == 48) and not (self.rect.x > 288 and self.rect.x < 384 and self.rect.y == 48) and not (self.rect.x > 480 and self.rect.x < 624 and self.rect.y == 48) and not (self.rect.x > 240 and self.rect.x < 432 and self.rect.y == 144) and not (self.rect.x > 48 and self.rect.x < 240 and self.rect.y == 288) and not (self.rect.x > 432 and self.rect.x < 624 and self.rect.y == 288) and not (self.rect.x > 240 and self.rect.x < 432 and self.rect.y == 432) and not (self.rect.x > 48 and self.rect.x < 144 and self.rect.y == 480) and not (self.rect.x > 96 and self.rect.x < 192 and self.rect.y == 528) and not (self.rect.x > 288 and self.rect.x < 384 and self.rect.y == 528) and not (self.rect.x > 480 and self.rect.x < 624 and self.rect.y == 528) and not (self.rect.x > 528 and self.rect.x < 624 and self.rect.y == 480):
-                if self._motion[0] < -0.25:
-                    self.rect.move_ip(0, 1)
+            if self._motion[1] > 0.25:
+                self.rect.move_ip(0, 1)
 
         if (self.rect.x > 48 and self.rect.y >= 48 and self.rect.y <= 624) and not (self.rect.x == 192 and self.rect.y > 48 and self.rect.y < 144) and not (self.rect.x == 144 and self.rect.y > 96 and self.rect.y < 192) and not (self.rect.x == 384 and self.rect.y > 48 and self.rect.y < 144) and not (self.rect.x == 624 and self.rect.y > 48 and self.rect.y < 192) and not (self.rect.x == 432 and self.rect.y > 144 and self.rect.y < 240) and not (self.rect.x == 240 and self.rect.y > 288 and self.rect.y < 384) and not (self.rect.x == 624 and self.rect.y > 288 and self.rect.y < 384) and not (self.rect.x == 432 and self.rect.y > 432 and self.rect.y < 528) and not (self.rect.x == 144 and self.rect.y > 480 and self.rect.y < 624) and not (self.rect.x == 192 and self.rect.y > 528 and self.rect.y < 624) and not (self.rect.x == 384 and self.rect.y > 528 and self.rect.y < 624) and not (self.rect.x == 624 and self.rect.y > 480 and self.rect.y < 624):
-            if self._motion[1] > 0.25:
+            if self._motion[0] < -0.25:
                 self.rect.move_ip(-1, 0)
 
         if (self.rect.x < 624 and self.rect.y >= 48 and self.rect.y <= 624) and not (self.rect.y > 48 and self.rect.y < 192 and self.rect.x == 48) and not (self.rect.x > 288 and self.rect.x < 384 and self.rect.y > 48 and self.rect.y < 144) and not (self.rect.x > 480 and self.rect.x < 624 and self.rect.y > 48 and self.rect.y < 144) and not (self.rect.x > 528 and self.rect.x < 624 and self.rect.y > 96 and self.rect.y < 192) and not (self.rect.x > 240 and self.rect.x < 288 and self.rect.y > 144 and self.rect.y < 240) and not (self.rect.x == 48 and self.rect.y > 288 and self.rect.y < 384) and not (self.rect.x == 432 and self.rect.y > 288 and self.rect.y < 384) and not (self.rect.x == 240 and self.rect.y > 432 and self.rect.y < 528) and not (self.rect.x == 48 and self.rect.y > 480 and self.rect.y < 624) and not (self.rect.x == 288 and self.rect.y > 528 and self.rect.y < 624) and not (self.rect.x == 480 and self.rect.y > 528 and self.rect.y < 624) and not (self.rect.x == 528 and self.rect.y > 480 and self.rect.y < 624):
-            if self._motion[1] < -0.25:
+            if self._motion[0] > 0.25:
                 self.rect.move_ip(1, 0)
 
     def setMotion(self, axis, value):   #_motion récupère l'axe et la valeur du stick
         self._motion[axis] = value
+
 
 class Bomb:
     def __init__(self, bomb, perso1, perso2):
@@ -81,8 +82,8 @@ class Bomb:
         #self.bomb.set_colorkey((255, 255, 255))
         self.x = x
         self.y = y
-        self.case_x = int(x / 128)
-        self.case_y = int(y / 128)
+        self.case_x = x
+        self.case_y = y
         self._time_created = datetime.now()
         self.explosion = 0
 
@@ -100,15 +101,11 @@ class Bomb:
             try:
 
                 # conditions de victoire (a simplifier)
-                if self.case_x == self.perso1.case_x and self.case_y - 1 <= self.perso1.case_y <= self.case_y + 1:
-                    return 1
-                elif self.case_x - 1 <= self.perso1.case_x <= self.case_x + 1 and self.case_y == self.perso1.case_y:
+                if self.case_x - 48 <= self.perso1.rect.x <= self.case_x + 48 and self.case_y - 48 <= self.perso1.rect.y <= self.case_y + 48:
                     return 1
 
-                if self.case_x == self.perso2.case_x and self.case_y - 1 <= self.perso2.case_y <= self.case_y + 1:
+                if self.case_x - 48 <= self.perso2.rect.x <= self.case_x + 48 and self.case_y - 48 <= self.perso2.rect.y <= self.case_y + 48:
                     return 1
-                elif self.case_x - 1 <= self.perso2.case_x <= self.case_x + 1 and self.case_y == self.perso2.case_y:
-                    return 1 
 
             except IndexError:
                 # au cas ou la bombe est / detruit un bloc en dehors du terrain
@@ -116,8 +113,8 @@ class Bomb:
 
         if timedelta(milliseconds=3500) <= datetime.now() - self._time_created:
             # place la bombe a une position non visible apres l'explosion
-            self.x = 1650
-            self.y = 950
-            self.case_x = 255
-            self.case_y = 255
+            self.x = 16500
+            self.y = 9500
+            self.case_x = 2550
+            self.case_y = 2550
             self.explosion = 0

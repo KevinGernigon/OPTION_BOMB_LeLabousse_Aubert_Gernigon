@@ -10,11 +10,14 @@ from pygame.locals import (
     K_q,
     K_s,
     K_d,
+    K_e,
     K_UP,
     K_DOWN,
     K_LEFT,
     K_RIGHT,
+    K_KP0,
     K_ESCAPE,
+    K_SPACE,
     KEYDOWN,
     KEYUP,
     JOYBUTTONDOWN,
@@ -28,7 +31,7 @@ from pygame.locals import (
 SCREEN_WIDTH = 720
 SCREEN_HEIGHT = 720
 
-image_bombe = "bomb.png"
+image_bombe = "assets/bomb.png"
 
 walls_data = [[10, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 11], [4, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, 5], [4, -1, 8, 2, -1, -1, -1, 2, -1, -1, -1, 2, 9, -1, 5], [4, -1, 5, -1, -1, -1, -1, -1, -1, -1, -1, -1, 4, -1, 5], [4, -1, -1, -1, -1, -1, 2, 2, 2, -1, -1, -1, -1, -1, 5], [4, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, 5], [4, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, 5], [4, -1, 2, 2, 2, -1, -1, -1, -1, -1, 2, 2, 2, -1, 5], [4, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, 5], [4, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, 5], [4, -1, -1, -1, -1, -1, 2, 2, 2, -1, -1, -1, -1, -1, 5], [4, -1, 5, -1, -1, -1, -1, -1, -1, -1, -1, -1, 4, -1, 5], [4, -1, 6, 3, -1, -1, -1, 3, -1, -1, -1, 3, 7, -1, 5], [4, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, 5], [12, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 13]]
 walls_img_list = []
@@ -73,8 +76,8 @@ player = Player("assets/joueur_bleu.png", 48, 48)
 player2 = Player("assets/joueur_vert.png", 624, 624)
 players = [player, player2]
 
-bombe = Bomb("bomb.png",player,player2)
-bombe2 = Bomb("bomb.png",player2,player)
+bombe = Bomb("assets/bomb.png",player,player2)
+bombe2 = Bomb("assets/bomb.png",player2,player)
 
 # Run until the user asks to quit
 running = True
@@ -108,11 +111,18 @@ while running:
 
     pressed_keys = pygame.key.get_pressed()
 
-    if pressed_keys[K_SPACE]:
-        bombe.poser(player.x, player.y, image_bombe)
+    if pressed_keys[K_e]:
+        bombe2.poser(player2.rect.x, player2.rect.y, image_bombe)
+
+    if pressed_keys[K_KP0]:
+        bombe.poser(player.rect.x, player.rect.y, image_bombe)
 
     if event.type == JOYBUTTONDOWN:
-        bombe.poser(player2.x, player2.y, image_bombe)
+        if event.button == 0 and event.instance_id == 0:
+            bombe.poser(player.rect.x, player.rect.y, image_bombe)
+
+        if event.button == 0 and event.instance_id == 1:
+            bombe2.poser(player2.rect.x, player2.rect.y, image_bombe)
 
     screen.fill((0, 0, 0))
     screen.blit(background, (0,0))
