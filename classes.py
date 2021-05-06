@@ -12,8 +12,8 @@ class Player(pygame.sprite.Sprite):
         self.rect.y = position_y
         self.case_x = 1
         self.case_y = 1
-        self.x = 128 * self.case_x
-        self.y = 128 * self.case_y
+        self.x = 128*self.case_x
+        self.y = 128*self.case_y
         self._motion = [0,0]
 
     def movementKeyboard(self, pressed_keys, up, down, left, right):    #Déplace le joueur en fonction des touches clavier
